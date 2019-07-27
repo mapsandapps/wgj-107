@@ -6,8 +6,11 @@ export class GameScene extends Phaser.Scene {
   public platformGroup: Phaser.GameObjects.Group // active platforms
   public platformPool: Phaser.GameObjects.Group // inactive platforms
 
+  private highScore: number
   private nextPlatformDistance: number
   private player: Player
+  private score: number
+  private scoreText: Phaser.GameObjects.Text
 
   constructor() {
     super({
@@ -15,19 +18,23 @@ export class GameScene extends Phaser.Scene {
     })
   }
 
-  init(): void { }
+  init(): void {
+    let storedHighScore = localStorage.getItem('runnerHighScore')
+    this.highScore = storedHighScore ? parseInt(storedHighScore) : 0
+    this.score = 0
+    this.scoreText = new Phaser.GameObjects.Text(this, 10, 10, '', {})
+    this.add.existing(this.scoreText)
+  }
 
   create(): void {
     this.platformGroup = new Phaser.GameObjects.Group(this)
     this.platformGroup.removeCallback = platform => {
       this.platformPool.add(platform)
-      console.log(`moved platform from platformgroup (${this.platformGroup.getLength()}) to platformpool (${this.platformPool.getLength()})`)
     }
 
     this.platformPool = new Phaser.GameObjects.Group(this)
     this.platformPool.removeCallback = platform => {
       this.platformGroup.add(platform)
-      console.log(`moved platform from platformpool (${this.platformPool.getLength()}) to platformgroup (${this.platformGroup.getLength()})`)
     }
 
     let lava = new Phaser.GameObjects.Rectangle(this, 0, CONST.GAME.HEIGHT - 20, CONST.GAME.WIDTH, 20, 0xff0000)
@@ -92,8 +99,8 @@ export class GameScene extends Phaser.Scene {
       let nextPlatformY = Phaser.Math.Between(60, CONST.GAME.HEIGHT - 30)
       this.addPlatform(nextPlatformWidth, CONST.GAME.WIDTH + nextPlatformWidth, nextPlatformY)
     }
-
-    // this.player.update()
+    this.score++
+    this.scoreText.setText(`Score: ${this.score}\nHigh Score: ${this.highScore}`)
   }
 
   private restartScene(): void {
@@ -108,13 +115,23 @@ export class GameScene extends Phaser.Scene {
     this.player.active = false
     this.scene.pause()
 
+    let loseText
+
+    if (this.score > this.highScore) {
+      this.highScore = this.score
+      localStorage.setItem('runnerHighScore', `${this.highScore}`)
+      loseText = '\nNew high score!!!'
+    } else {
+      loseText = 'Oh no!\nYou lost!'
+    }
+
     this.add.text(
       this.player.x,
-      this.player.y - 60,
-      'Oh no!\nYou lost!', {
+      this.player.y - 50,
+      loseText, {
         align: 'center'
       }
-    ).setOrigin(0.5, 0.5)
+    ).setOrigin(0.5, 1)
   }
 
   private exitToWinScene(): void {

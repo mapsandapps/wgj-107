@@ -1,5 +1,4 @@
 export class MenuScene extends Phaser.Scene {
-  private startKey: Phaser.Input.Keyboard.Key
   private texts: Phaser.GameObjects.Text[] = []
 
   constructor() {
@@ -9,10 +8,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   init(): void {
-    this.startKey = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.X
-    )
-    this.startKey.isDown = false
+    this.input.on('pointerup', this.start, this)
   }
 
   preload(): void {
@@ -24,7 +20,14 @@ export class MenuScene extends Phaser.Scene {
       this.add.text(
         this.sys.canvas.width / 2,
         this.sys.canvas.height / 2 - 60,
-        'GAME'
+        'DON\'T TOUCH THE LAVA'
+      ).setOrigin(0.5, 0.5)
+    )
+    this.texts.push(
+      this.add.text(
+        this.sys.canvas.width / 2,
+        this.sys.canvas.height / 2 - 20,
+        'CLICK TO JUMP/DOUBLE JUMP'
       ).setOrigin(0.5, 0.5)
     )
 
@@ -32,14 +35,12 @@ export class MenuScene extends Phaser.Scene {
       this.add.text(
         this.sys.canvas.width / 2,
         this.sys.canvas.height / 2 + 60,
-        'PRESS X TO PLAY'
+        'CLICK TO BEGIN'
       ).setOrigin(0.5, 0.5)
     )
   }
 
-  update(): void {
-    if (this.startKey.isDown) {
-      this.scene.start('GameScene')
-    }
+  start(): void {
+    this.scene.start('GameScene')
   }
 }
