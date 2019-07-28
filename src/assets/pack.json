@@ -10,6 +10,11 @@
         "type": "image",
         "key": "player",
         "url": "./src/assets/player.png"
+      },
+      {
+        "type": "image",
+        "key": "lava",
+        "url": "./src/assets/lava.png"
       }
     ]
   }

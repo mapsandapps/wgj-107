@@ -1,4 +1,5 @@
 import { CONST } from '../helpers/const'
+import { Lava } from '../objects/lava'
 import { Platform } from '../objects/platform'
 import { Player } from '../objects/player'
 
@@ -27,6 +28,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    new Lava(this)
+
     this.platformGroup = new Phaser.GameObjects.Group(this)
     this.platformGroup.removeCallback = platform => {
       this.platformPool.add(platform)
@@ -36,10 +39,6 @@ export class GameScene extends Phaser.Scene {
     this.platformPool.removeCallback = platform => {
       this.platformGroup.add(platform)
     }
-
-    let lava = new Phaser.GameObjects.Rectangle(this, 0, CONST.GAME.HEIGHT - 20, CONST.GAME.WIDTH, 20, 0xff0000)
-    lava.setOrigin(0, 0)
-    this.add.existing(lava)
 
     this.addPlatform(CONST.GAME.WIDTH, CONST.GAME.WIDTH / 2, CONST.GAME.HEIGHT * 0.8)
 
