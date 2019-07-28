@@ -24,8 +24,12 @@ npm run build
 
 Builds to `index.html` and `dist/bundle.js`
 
-# To configure
+# Credits:
 
-* Add name, description, and author's name & email to package.json
-* Provide a title in index.html
-* Add any assets to pack.json; remove the example ones
+* Based on:
+  * https://github.com/digitsensitive/phaser3-typescript
+  * https://www.emanueleferonato.com/2018/11/13/build-a-html5-endless-runner-with-phaser-in-a-few-lines-of-code-using-arcade-physics-and-featuring-object-pooling/
+* Asset credits:
+  * [Player and platform from Emanuele Feronato](https://www.emanueleferonato.com/2018/11/13/build-a-html5-endless-runner-with-phaser-in-a-few-lines-of-code-using-arcade-physics-and-featuring-object-pooling/)
+  * [Lava particle from Phaser Labs](https://labs.phaser.io/)
+
