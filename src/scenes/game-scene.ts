@@ -25,6 +25,7 @@ export class GameScene extends Phaser.Scene {
     this.highScore = storedHighScore ? parseInt(storedHighScore) : 0
     this.score = 0
     this.scoreText = new Phaser.GameObjects.Text(this, 10, 10, '', {})
+      .setDepth(2)
     this.add.existing(this.scoreText)
   }
 
@@ -51,6 +52,13 @@ export class GameScene extends Phaser.Scene {
     })
 
     this.physics.add.collider(this.player, this.platformGroup)
+
+    this.add.image(CONST.GAME.WIDTH, CONST.GAME.HEIGHT / 2, 'background')
+      .setAlpha(0.8)
+      .setBlendMode('MULTIPLY')
+      .setDepth(-1)
+      .setOrigin(1, 0.5)
+      .setScrollFactor(0)
   }
 
   private addPlatform(platformWidth, posX, posY) {

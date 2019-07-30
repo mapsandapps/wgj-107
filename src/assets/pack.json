@@ -58,6 +58,11 @@
         "type": "image",
         "key": "lava",
         "url": "./src/assets/lava.png"
+      },
+      {
+        "type": "image",
+        "key": "background",
+        "url": "./src/assets/background.png"
       }
     ]
   }

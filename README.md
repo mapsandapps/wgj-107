@@ -31,4 +31,5 @@ Builds to `index.html` and `dist/bundle.js`
   * [Platform from Kenney](https://kenney.nl/assets/platformer-pack-redux)
   * [Lava particle from Phaser Labs](https://labs.phaser.io/)
   * [Player from CraftPix](https://craftpix.net/freebies/free-orc-ogre-and-goblin-chibi-2d-game-sprites/)
+  * [Background from CraftPix](https://craftpix.net/product/2d-battle-backgrounds/)
 

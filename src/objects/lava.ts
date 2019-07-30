@@ -20,7 +20,7 @@ export class Lava extends Phaser.GameObjects.Particles.ParticleEmitterManager {
         angle: 270,
         blendMode: 'SCREEN',
         gravityY: 200,
-        lifespan: 200,
+        lifespan: [0, 300],
         scale: {
           start: 0.4,
           end: 0.1
