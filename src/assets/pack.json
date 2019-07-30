@@ -3,13 +3,56 @@
     "files": [
       {
         "type": "image",
-        "key": "platform",
-        "url": "src/assets/platform.png"
+        "key": "platform1",
+        "url": "src/assets/platform1.png"
       },
       {
         "type": "image",
-        "key": "player",
-        "url": "./src/assets/player.png"
+        "key": "platform2",
+        "url": "src/assets/platform2.png"
+      },
+      {
+        "type": "image",
+        "key": "platform3",
+        "url": "src/assets/platform3.png"
+      },
+      {
+        "type": "image",
+        "key": "platform4",
+        "url": "src/assets/platform4.png"
+      },
+      {
+        "type": "image",
+        "key": "platform5",
+        "url": "src/assets/platform5.png"
+      },
+      {
+        "type": "image",
+        "key": "platform6",
+        "url": "src/assets/platform6.png"
+      },
+      {
+        "type": "image",
+        "key": "platform7",
+        "url": "src/assets/platform7.png"
+      },
+      {
+        "type": "spritesheet",
+        "key": "running",
+        "url": "./src/assets/running.png",
+        "frameConfig": {
+          "frameHeight": 128,
+          "frameWidth": 128
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "death",
+        "url": "./src/assets/death.png",
+        "frameConfig": {
+          "frameHeight": 128,
+          "frameWidth": 128
+        }
       },
       {
         "type": "image",

@@ -7,6 +7,7 @@ export class GameScene extends Phaser.Scene {
   public platformGroup: Phaser.GameObjects.Group // active platforms
   public platformPool: Phaser.GameObjects.Group // inactive platforms
 
+  private gameOver: boolean
   private highScore: number
   private nextPlatformDistance: number
   private player: Player
@@ -40,7 +41,7 @@ export class GameScene extends Phaser.Scene {
       this.platformGroup.add(platform)
     }
 
-    this.addPlatform(CONST.GAME.WIDTH, CONST.GAME.WIDTH / 2, CONST.GAME.HEIGHT * 0.8)
+    this.addPlatform(7, CONST.GAME.WIDTH / 2, CONST.GAME.HEIGHT * 0.8)
 
     this.player = new Player({
       scene: this,
@@ -57,7 +58,9 @@ export class GameScene extends Phaser.Scene {
     if (this.platformPool.getLength()) {
       // reuse a platform from the pool
       platform = this.platformPool.getFirst()
+      platform.key = `platform${platformWidth}`
       platform.x = posX
+      platform.y = posY
       platform.active = true
       platform.visible = true
       this.platformPool.remove(platform)
@@ -67,18 +70,23 @@ export class GameScene extends Phaser.Scene {
         scene: this,
         x: posX,
         y: posY,
-        key: 'platform'
+        key: `platform${platformWidth}`
       })
       this.platformGroup.add(platform)
+      platform.displayWidth = platformWidth * CONST.PLATFORM_UNIT_WIDTH
     }
-    platform.displayWidth = platformWidth
     this.nextPlatformDistance = Phaser.Math.Between(CONST.SPAWN_RANGE[0], CONST.SPAWN_RANGE[1])
   }
 
   update(): void {
-    if (this.player.y > CONST.GAME.HEIGHT) {
-      this.gameLost()
+    if (this.gameOver) {
+      return
     }
+
+    if (this.player.y > CONST.GAME.HEIGHT) {
+      this.lose()
+    }
+
     this.player.x = CONST.PLAYER_START_POSITION
 
     let minDistance = CONST.GAME.WIDTH
@@ -96,13 +104,23 @@ export class GameScene extends Phaser.Scene {
     if (minDistance > this.nextPlatformDistance) {
       let nextPlatformWidth = Phaser.Math.Between(CONST.PLATFORM_SIZE_RANGE[0], CONST.PLATFORM_SIZE_RANGE[1])
       let nextPlatformY = Phaser.Math.Between(60, CONST.GAME.HEIGHT - 30)
-      this.addPlatform(nextPlatformWidth, CONST.GAME.WIDTH + nextPlatformWidth, nextPlatformY)
+      this.addPlatform(nextPlatformWidth, CONST.GAME.WIDTH + nextPlatformWidth * CONST.PLATFORM_UNIT_WIDTH, nextPlatformY)
     }
     this.score++
     this.scoreText.setText(`Score: ${this.score}\nHigh Score: ${this.highScore}`)
   }
 
-  private restartScene(): void {
+  // private restartScene(): void {
+  //   this.scene.restart()
+  // }
+
+  private stopScene(): void {
+    this.gameOver = false
+    this.platformGroup.getChildren().forEach(platform => {
+      platform.body.setVelocityX(CONST.PLATFORM_START_SPEED * -1)
+    }, this)
+    this.scene.stop()
+    // TODO: click to restart
     this.scene.restart()
   }
 
@@ -110,9 +128,14 @@ export class GameScene extends Phaser.Scene {
     this.player.setActive(false)
   }
 
-  private gameLost(): void {
-    this.player.active = false
-    this.scene.pause()
+  private lose(): void {
+    this.gameOver = true
+
+    this.platformGroup.getChildren().forEach(platform => {
+      platform.body.setVelocityX(0)
+    }, this)
+
+    // this.player.die()
 
     let loseText
 
@@ -131,11 +154,13 @@ export class GameScene extends Phaser.Scene {
         align: 'center'
       }
     ).setOrigin(0.5, 1)
-  }
 
-  private exitToWinScene(): void {
-    this.setObjectsInactive()
-    this.scene.stop()
-    this.scene.get('WinScene').scene.start()
+    // this.time.delayedCall(3000, this.stopScene, null, this)
+    // new Phaser.Time.TimerEvent({
+    //   callback: this.restartScene,
+    //   callbackScope: this,
+    //   delay: 1000
+    // })
+    this.scene.pause()
   }
 }
